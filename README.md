@@ -39,8 +39,6 @@ The primary objective of "Spend Sensei" is to address the shortcomings of tradit
 
 The application follows a robust client-server architecture, integrating a powerful third-party AI service.
 
-![System Architecture Diagram](https://i.imgur.com/eB3bX0s.png)
-
 *   **Frontend (Client-Side)**: A single-page application (SPA) built with **HTML5**, **CSS3**, and **vanilla JavaScript**. It is responsible for all user interactions, including the file upload/paste mechanism, rendering the chat interface, and dynamically updating the dashboard with data from the backend. The Chart.js library is used for data visualization.
 
 *   **Backend (Server-Side)**: A lightweight and powerful web server built using the **Flask** framework in **Python**. It serves the frontend application and provides a RESTful API for the client to communicate with.
@@ -74,7 +72,7 @@ The backend is powered by Flask and Python.
     *   **Routing**: Defines the API endpoints and the HTTP methods they respond to.
     *   **Gemini Integration**: Uses the `google-generativeai` Python library to interact with the Gemini API. It constructs carefully engineered prompts to ensure the AI returns data in a reliable, structured JSON format.
     *   **Business Logic**: Handles the logic for parsing the AI's response, managing conversation history for the Q&A feature, and ensuring multi-currency support by passing currency information between the analysis and chat contexts.
-    *   **CORS Handling**: Implements Cross-Origin Resource Sharing (CORS) to allow the frontend to make requests to the backend, as they are served on the same origin but treated as separate entities by the browser.
+    *   **CORS Handling**: Implements Cross-Origin Resource Sharing (CORS) to allow the frontend to make requests to the backend, as they are served on the same origin but they are treated as separate entities by the browser.
 
 ### 4.3. AI and Prompt Engineering
 
