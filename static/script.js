@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalChartCanvas = document.getElementById('modalChartCanvas');
     const closeButton = document.querySelector('.close-button');
     let currentChartData = null; // To store the latest chart data
+    let sessionTotalSpend = 0; // To store the session's total spend
+    let sessionCategorySpends = new Map(); // To aggregate category spends
 
     // Initially disable chat
     chatInput.disabled = false;
@@ -196,6 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displaySenseiResponse(data) {
         currentChartData = data; // Store data for modal
+
+        // Aggregate category spends for the session
+        data.summary.categorySpends.forEach(item => {
+            if (sessionCategorySpends.has(item.category)) {
+                sessionCategorySpends.set(item.category, sessionCategorySpends.get(item.category) + item.amount);
+            } else {
+                sessionCategorySpends.set(item.category, item.amount);
+            }
+        });
+
         const bubble = document.createElement('div');
         bubble.className = 'chat-bubble sensei';
 
@@ -209,33 +221,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chatWindow.appendChild(bubble);
 
-        const chartColors = ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff'];
+        const chartColors = ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ffff'];
 
         new Chart(canvas, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
-                labels: data.summary.categorySpends.map(c => c.category),
+                labels: Array.from(sessionCategorySpends.keys()),
                 datasets: [{
                     label: 'Spend',
-                    data: data.summary.categorySpends.map(c => c.amount),
-                    backgroundColor: data.summary.categorySpends.map((_, i) => chartColors[i % chartColors.length]),
-                    borderColor: 'rgba(255, 255, 255, 0.5)',
-                    borderWidth: 1
+                    data: Array.from(sessionCategorySpends.values()),
+                    backgroundColor: Array.from(sessionCategorySpends.keys()).map((_, i) => chartColors[i % chartColors.length]),
+                    borderColor: 'var(--background-light)',
+                    borderWidth: 2
                 }]
             },
             options: {
                 onClick: () => openModalChart(),
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: 'var(--text-light)' },
-                        grid: { color: 'var(--border-color)' }
-                    },
-                    x: {
-                        ticks: { color: 'var(--text-light)' },
-                        grid: { color: 'var(--border-color)' }
-                    }
-                },
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -247,43 +250,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openModalChart() {
-        if (!currentChartData) return;
+        if (sessionCategorySpends.size === 0) return;
         modal.style.display = 'block';
-        const chartColors = ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff'];
+        const chartColors = ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ffff'];
 
         new Chart(modalChartCanvas, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
-                labels: currentChartData.summary.categorySpends.map(c => c.category),
+                labels: Array.from(sessionCategorySpends.keys()),
                 datasets: [{
                     label: 'Spend',
-                    data: currentChartData.summary.categorySpends.map(c => c.amount),
-                    backgroundColor: currentChartData.summary.categorySpends.map((_, i) => chartColors[i % chartColors.length]),
-                    borderRadius: 5,
-                    borderWidth: 0
+                    data: Array.from(sessionCategorySpends.values()),
+                    backgroundColor: Array.from(sessionCategorySpends.keys()).map((_, i) => chartColors[i % chartColors.length]),
+                    borderColor: '#fff',
+                    borderWidth: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                     y: {
-                        beginAtZero: true,
-                        ticks: { color: 'var(--text-dark)', font: { size: 14 } },
-                        grid: { color: 'var(--border-color)' }
-                    },
-                    x: {
-                        ticks: { color: 'var(--text-dark)', font: { size: 14 } },
-                        grid: { display: false }
-                    }
-                },
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'top',
+                        position: 'right',
                         labels: {
                             color: 'var(--text-dark)',
-                            font: { size: 16 }
+                            font: { size: 14 },
+                            boxWidth: 20,
+                            padding: 20
                         }
                     }
                 }
@@ -310,7 +304,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateWisdomCorner(data) {
         // Animate the total spend
         const currencySymbol = data.summary.currencySymbol || '₹';
-        animateValue(totalSpendEl, 0, data.summary.totalSpend, 1000, currencySymbol);
+        const newSpend = data.summary.totalSpend;
+        const oldSpend = sessionTotalSpend;
+        sessionTotalSpend += newSpend;
+
+        animateValue(totalSpendEl, oldSpend, sessionTotalSpend, 1000, currencySymbol);
 
         // Update the financial tip
         financialTipEl.textContent = data.savingTip;
@@ -321,9 +319,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            element.textContent = `${currencySymbol}${(progress * (end - start)).toFixed(2)}`;
+            const currentValue = start + progress * (end - start);
+            element.textContent = `${currencySymbol}${currentValue.toFixed(2)}`;
             if (progress < 1) {
                 window.requestAnimationFrame(step);
+            } else {
+                element.textContent = `${currencySymbol}${end.toFixed(2)}`; // Ensure it ends on the exact value
             }
         };
         window.requestAnimationFrame(step);
