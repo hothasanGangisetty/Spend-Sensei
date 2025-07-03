@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend Sensei</title>
+    <link rel="stylesheet" href="/static/style_v2.css?v=1.1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sensei-hub">
+            <div class="chat-window">
+                <div class="chat-bubble sensei">
+                    <p>Welcome! Upload your first receipt to see the magic happen.</p>
+                </div>
+            </div>
+            <div class="chat-input-bar">
+                <input type="file" id="receipt-upload" style="display: none;" accept="image/*">
+                <button id="upload-button" class="icon-button" aria-label="Upload receipt">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </button>
+                <input type="text" id="chat-input" placeholder="Ask a follow-up question...">
+                <button id="send-button" class="icon-button" aria-label="Send message">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="wisdom-corner">
+            <div class="card weekly-snapshot">
+                <h3>This Week's Spend</h3>
+                <p class="total-spend">₹0.00</p>
+            </div>
+            <div class="card financial-tip">
+                <h3>Proven Financial Saving Tip</h3>
+                <p>{{ random_tip }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <canvas id="modalChartCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

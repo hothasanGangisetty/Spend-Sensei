@@ -1,0 +1,207 @@
+/* --- The Core Philosophy: "Effortless Financial Clarity" --- */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F7F9FC;
+    color: #263238;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* --- The Vibe & Aesthetic: "Modern FinTech Zen" --- */
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    height: 85vh; /* Increased height */
+    background: #FFFFFF;
+    border-radius: 24px; /* Softer corners */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08); /* Deeper shadow */
+    overflow: hidden;
+}
+
+.sensei-hub {
+    flex: 0 0 70%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #E8EDF2; /* Lighter border */
+}
+
+.wisdom-corner {
+    flex: 0 0 30%;
+    padding: 35px;
+    background: linear-gradient(170deg, #F7F9FC, #FFFFFF); /* Subtle gradient */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* --- The User Journey & CRO-Optimized Structure --- */
+
+.chat-window {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chat-bubble {
+    padding: 15px 22px;
+    border-radius: 22px;
+    max-width: 85%;
+    line-height: 1.6;
+    animation: pop-in 0.3s ease-out forwards;
+}
+
+@keyframes pop-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.chat-bubble.sensei {
+    background-color: #F1F3F6;
+    align-self: flex-start;
+}
+
+.chat-bubble.user {
+    background-color: #3949AB; /* Softer Indigo */
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-input-bar {
+    padding: 15px 25px;
+    border-top: 1px solid #E8EDF2;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #fff;
+}
+
+#chat-input {
+    flex-grow: 1;
+    border: none;
+    background-color: #F7F9FC;
+    padding: 14px 20px;
+    border-radius: 15px;
+    outline: none;
+    font-size: 1em;
+    transition: box-shadow 0.3s ease;
+}
+
+#chat-input:focus {
+    box-shadow: 0 0 0 2px #69F0AE;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #546E7A;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.icon-button:hover {
+    background-color: #F1F3F6;
+}
+
+#send-button {
+    background-color: #69F0AE;
+    color: #1A237E;
+}
+
+#send-button:hover {
+    background-color: #00E676;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #E8EDF2;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.card h3 {
+    margin-top: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    color: #3949AB;
+}
+
+/* FIX: Ensure tip text wraps correctly */
+.card p {
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.6;
+}
+
+.total-spend {
+    font-size: 2.5em;
+    font-weight: 800; /* Bolder */
+    color: #1A237E;
+    margin: 10px 0;
+}
+
+/* --- Micro-interactions & Polish --- */
+
+.sensei-typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 18px 22px;
+}
+
+.sensei-typing-indicator .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #BDBDBD;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.sensei-typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+.sensei-typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+}
+
+/* --- Mobile-First Responsiveness --- */
+
+@media (max-width: 900px) { /* Adjusted breakpoint */
+    .container {
+        flex-direction: column;
+        height: 100vh;
+        border-radius: 0;
+        height: auto;
+        min-height: 100vh;
+    }
+    .sensei-hub {
+        border-right: none;
+        border-bottom: 1px solid #E8EDF2;
+    }
+    .wisdom-corner {
+        border-top: 1px solid #E8EDF2;
+    }
+}
+
+@media (max-width: 480px) {
+    body { padding: 0; }
+    .chat-window { padding: 20px 15px; }
+    .chat-input-bar { padding: 10px 15px; }
+    .wisdom-corner { padding: 25px; }
+}
